@@ -75,8 +75,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("**Model:** all-MiniLM-L6-v2")
-    st.markdown("**LLM:** Ollama llama3.2")
-
+    st.markdown("**LLM:** Groq llama-3.1-8b-instant")
 
 # ─────────────────────────────────────────
 # MAIN AREA — CHAT

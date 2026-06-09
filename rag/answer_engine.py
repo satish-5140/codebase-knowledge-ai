@@ -1,8 +1,35 @@
-import ollama
+import os
 from typing import List, Dict
 from embeddings.vector_store import search
 from embeddings.embedder import embed_query
-from config.settings import OLLAMA_MODEL, TOP_K_RESULTS
+from config.settings import TOP_K_RESULTS, GROQ_API_KEY, GROQ_MODEL, OLLAMA_MODEL
+
+
+def get_llm_answer(prompt: str) -> str:
+    """
+    Tries Groq first, falls back to Ollama if Groq key not set.
+    """
+    if GROQ_API_KEY:
+        try:
+            from groq import Groq
+            client = Groq(api_key=GROQ_API_KEY)
+            response = client.chat.completions.create(
+                model=GROQ_MODEL,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response.choices[0].message.content
+        except Exception as e:
+            return f"Groq error: {e}"
+    else:
+        try:
+            import ollama
+            response = ollama.chat(
+                model=OLLAMA_MODEL,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response["message"]["content"]
+        except Exception as e:
+            return f"Ollama error: {e}"
 
 
 def get_answer(question: str, top_k: int = TOP_K_RESULTS) -> Dict:
@@ -11,7 +38,7 @@ def get_answer(question: str, top_k: int = TOP_K_RESULTS) -> Dict:
     1. Embed the question
     2. Search FAISS for relevant chunks
     3. Build prompt with context
-    4. Ask Ollama
+    4. Ask LLM (Groq or Ollama)
     5. Return answer + sources
     """
 
@@ -49,15 +76,8 @@ QUESTION:
 
 ANSWER:"""
 
-    # Step 5 — Ask Ollama
-    try:
-        response = ollama.chat(
-            model=OLLAMA_MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        answer = response["message"]["content"]
-    except Exception as e:
-        answer = f"Error connecting to Ollama: {e}\nMake sure Ollama is running with: ollama serve"
+    # Step 5 — Get answer from LLM
+    answer = get_llm_answer(prompt)
 
     # Step 6 — Return answer + sources
     sources = list(set(chunk["relative_path"] for chunk in relevant_chunks))
@@ -69,13 +89,6 @@ ANSWER:"""
     }
 
 
-if __name__ == "__main__":
-    question = "How does Flask handle routing?"
-    print(f"\n❓ Question: {question}\n")
-    result = get_answer(question)
-    print(f"✅ Answer:\n{result['answer']}")
-    print(f"\n📁 Sources: {result['sources']}")
-    
 def get_dependency_answer(question: str, dependency_data: Dict) -> Dict:
     """
     Answers questions about file relationships and dependencies.
@@ -83,10 +96,8 @@ def get_dependency_answer(question: str, dependency_data: Dict) -> Dict:
     from graph.dependency_graph import (
         get_most_connected_files,
         summarize_graph,
-        get_file_dependencies
     )
 
-    # Build context from dependency graph
     summary = summarize_graph(dependency_data)
     most_connected = get_most_connected_files(dependency_data, top_n=10)
 
@@ -107,14 +118,7 @@ QUESTION:
 
 ANSWER:"""
 
-    try:
-        response = ollama.chat(
-            model=OLLAMA_MODEL,
-            messages=[{"role": "user", "content": prompt}]
-        )
-        answer = response["message"]["content"]
-    except Exception as e:
-        answer = f"Error connecting to Ollama: {e}"
+    answer = get_llm_answer(prompt)
 
     return {
         "answer": answer,
