@@ -12,6 +12,13 @@ markdown<div align="center">
 </div>
 
 ---
+## 🌐 Live Demo
+
+👉 **[Try it live here](https://codebase-knowledge-ai-satish.streamlit.app/)**
+
+> No installation needed. Just open and use!
+---
+---
 
 ## 🚀 What Is This?
 
@@ -127,17 +134,27 @@ Once a repo is loaded, try asking:
 | **Embeddings** | Converting text into numbers that capture meaning |
 | **Vector Search** | Finding similar content mathematically, not by keyword |
 | **AST Parsing** | Reading code structure (functions, classes) programmatically |
-
 ---
+
+## ✨ Features
+
+- 🔍 **Semantic Search** — Finds code by meaning, not just keywords
+- 🤖 **AI Answers** — Plain English explanations powered by Groq LLM
+- 🔗 **Dependency Mapping** — See which files connect to which
+- 🕸️ **Visual Code Graph** — Interactive graph of entire codebase
+- ⚡ **Fast** — Groq API gives lightning fast responses
+- 🆓 **100% Free** — No paid APIs, free hosting on Streamlit Cloud
 
 ## 👨‍💻 Built By
 
 **Satish** — CS Engineering Graduate, KLE Institute of Technology
 
 [![GitHub](https://img.shields.io/badge/GitHub-satish--5140-black?style=flat&logo=github)](https://github.com/satish-5140)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-red?style=flat&logo=streamlit)](https://codebase-knowledge-ai-satish.streamlit.app/)
 
 ---
 
 <div align="center">
 ⭐ Star this repo if you found it useful!
 </div>
+---
