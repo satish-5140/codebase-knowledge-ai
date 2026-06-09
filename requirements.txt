@@ -1,0 +1,18 @@
+# Core
+gitpython
+python-dotenv
+
+# Embeddings
+sentence-transformers
+
+# Vector Store
+faiss-cpu
+
+# LLM (Ollama client)
+ollama
+
+# UI
+streamlit
+
+# Utilities
+tqdm

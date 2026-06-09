@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+env/
+.venv/
+
+# Environment variables (NEVER push this)
+.env
+
+# Cloned repositories (can be huge)
+data/repos/
+
+# FAISS indexes (regenerated automatically)
+data/faiss_index/
+
+# SQLite database (regenerated automatically)
+data/db/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log
