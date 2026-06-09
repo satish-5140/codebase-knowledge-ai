@@ -28,22 +28,16 @@ And get instant, accurate answers with source file references.
 ---
 
 ## ⚙️ How It Works
-GitHub URL
-↓
-📥 Repository Reader   →  Clones repo, reads all files
-↓
-🔬 Code Parser         →  Extracts functions, classes, imports (AST)
-↓
-✂️  Chunker             →  Splits files into searchable chunks
-↓
-🧠 Embedding Engine    →  Converts chunks to vectors (sentence-transformers)
-↓
-🗄️  FAISS Vector Store  →  Stores and searches vectors by meaning
-↓
-💬 RAG Engine          →  Retrieves context + asks Ollama
-↓
-✅ Plain English Answer
 
+| Step | Component | Action |
+|------|-----------|--------|
+| 1 | 📥 Repository Reader | Clones repo, reads all files |
+| 2 | 🔬 Code Parser | Extracts functions, classes, imports (AST) |
+| 3 | ✂️ Chunker | Splits files into searchable chunks |
+| 4 | 🧠 Embedding Engine | Converts chunks to vectors |
+| 5 | 🗄️ FAISS Vector Store | Stores and searches vectors by meaning |
+| 6 | 💬 RAG Engine | Retrieves context + asks Ollama |
+| 7 | ✅ Answer | Plain English response with sources |
 ---
 
 ## 🛠️ Tech Stack
@@ -63,22 +57,17 @@ GitHub URL
 ---
 
 ## 📁 Project Structure
-codebase-knowledge-ai/
-├── app/
-│   └── main.py              # Streamlit chat interface
-├── ingestion/
-│   ├── repo_reader.py       # Clone & read GitHub repos
-│   ├── code_parser.py       # AST code structure extraction
-│   └── chunker.py           # Split files into chunks
-├── embeddings/
-│   ├── embedder.py          # Generate vector embeddings
-│   └── vector_store.py      # FAISS index management
-├── rag/
-│   └── answer_engine.py     # RAG pipeline + Ollama
-├── config/
-│   └── settings.py          # Central configuration
-├── data/                    # Local data (gitignored)
-└── requirements.txt
+
+| Folder | File | Purpose |
+|--------|------|---------|
+| `app/` | `main.py` | Streamlit chat interface |
+| `ingestion/` | `repo_reader.py` | Clone & read GitHub repos |
+| `ingestion/` | `code_parser.py` | AST code structure extraction |
+| `ingestion/` | `chunker.py` | Split files into chunks |
+| `embeddings/` | `embedder.py` | Generate vector embeddings |
+| `embeddings/` | `vector_store.py` | FAISS index management |
+| `rag/` | `answer_engine.py` | RAG pipeline + Ollama |
+| `config/` | `settings.py` | Central configuration |
 
 ---
 
