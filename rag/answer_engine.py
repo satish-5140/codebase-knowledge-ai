@@ -75,3 +75,48 @@ if __name__ == "__main__":
     result = get_answer(question)
     print(f"✅ Answer:\n{result['answer']}")
     print(f"\n📁 Sources: {result['sources']}")
+    
+def get_dependency_answer(question: str, dependency_data: Dict) -> Dict:
+    """
+    Answers questions about file relationships and dependencies.
+    """
+    from graph.dependency_graph import (
+        get_most_connected_files,
+        summarize_graph,
+        get_file_dependencies
+    )
+
+    # Build context from dependency graph
+    summary = summarize_graph(dependency_data)
+    most_connected = get_most_connected_files(dependency_data, top_n=10)
+
+    context = summary + "\n\nMost Connected Files:\n"
+    for item in most_connected:
+        context += f"- {item['file']} imported by {item['imported_by_count']} files\n"
+        context += f"  Imported by: {', '.join(item['imported_by'][:3])}\n"
+
+    prompt = f"""You are an expert software engineer analyzing code dependencies.
+
+Use this dependency information to answer the question clearly.
+
+DEPENDENCY DATA:
+{context}
+
+QUESTION:
+{question}
+
+ANSWER:"""
+
+    try:
+        response = ollama.chat(
+            model=OLLAMA_MODEL,
+            messages=[{"role": "user", "content": prompt}]
+        )
+        answer = response["message"]["content"]
+    except Exception as e:
+        answer = f"Error connecting to Ollama: {e}"
+
+    return {
+        "answer": answer,
+        "sources": [item["file"] for item in most_connected[:5]]
+    }
